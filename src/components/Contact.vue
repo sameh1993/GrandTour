@@ -5,7 +5,11 @@
         <h2 class="text-center text-capitalize">Get In Touch With Us</h2>
       </div>
       <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12 text-center" :key="index" v-for="(item, index) in SocialItem">
+        <div
+          class="col-md-4 col-sm-6 col-xs-12 text-center"
+          :key="index"
+          v-for="(item, index) in SocialItem"
+        >
           <i :class="item.myIcon"></i>
           <h4>{{item.heading}}</h4>
           <p class="mt-2 mb-4" v-if="index < 2" v-html="item.para"></p>
@@ -13,36 +17,66 @@
       </div>
       <div class="row">
         <div class="col-md-6 col-sm-12 col-xs-12 mt-4">
-          <form>
+          <form class="form">
             <div class="form-group">
               <label for="FullName">Full Name</label>
-              <input type="text" class="form-control" id="FullName" placeholder="Enter Full Name" />
+              <input
+                type="text"
+                v-model="message.userName"
+                @blur="$v.message.userName.$touch()"
+                placeholder="Enter User Name "
+                class="input-field"
+                :class=" {'valid': !$v.message.userName.$invalid, 'error': $v.message.userName.$error }"
+              />
+              <p v-if="!$v.message.userName.required">this field dont must be empty</p>
+              <p
+                class="text-danger"
+                v-if="!$v.message.userName.minLen"
+              >this field dont must be at least 10 char</p>
             </div>
+
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
               <input
-                type="email"
-                class="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                placeholder="Enter email"
+                type="text"
+                v-model="message.email"
+                @blur="$v.message.email.$touch()"
+                placeholder="Enter Email "
+                class="input-field"
+                :class=" {'valid': !$v.message.email.$invalid, 'error': $v.message.email.$error }"
               />
+              <p v-if="!$v.message.email.required">this field dont must be empty</p>
+              <p class="valid" v-if="!$v.message.email.email">please, enter a valid email address</p>
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Your Number</label>
               <input
                 type="text"
-                class="form-control"
-                id="exampleInputPassword1"
-                placeholder="yoor Number"
+                v-model="message.number"
+                @blur="$v.message.number.$touch()"
+                placeholder="Enter Number "
+                class="input-field"
+                :class=" {'valid': !$v.message.number.$invalid, 'error': $v.message.number.$error }"
               />
+              <p v-if="!$v.message.number.numeric">please, enter a valid number phone</p>
             </div>
             <div class="form-group">
               <label>Your Message</label>
-              <textarea class="form-control"></textarea>
+              <textarea
+                v-model="message.msg"
+                @blur="$v.message.msg.$touch()"
+                placeholder="Enter message "
+                class="form-control"
+                :class=" {'valid': !$v.message.msg.$invalid, 'error': $v.message.msg.$error }"
+              ></textarea>
+              <p v-if="!$v.message.msg.required">this field dont must be empty</p>
+              <p
+                class="text-danger"
+                v-if="!$v.message.msg.minLen || !$v.message.msg.maxLen"
+              >this field dont must be at least 10 char and dont larger than 15 char</p>
             </div>
 
-            <button type="submit" class="btn btn-primary">Send</button>
+            <button type="submit" class="btn btn-primary mt-3">Send</button>
           </form>
         </div>
         <div class="right col-md-6 col-sm-12 col-xs-12 mt-4">
@@ -77,8 +111,12 @@
   padding: 4em 0;
   form {
     padding: 40px 40px;
-    box-shadow: 5px 5px 10px rgba(#ccc, 0.3), -5px -5px 10px rgba(#ccc, 0.1);
+    box-shadow: 5px 5px 10px rgba(#ccc, 0.4), -5px -5px 10px rgba(#ccc, 0.4);
     margin-top: 0;
+    .form-group {
+      margin-bottom: 5px;
+    }
+
     label {
       margin-top: 13px;
       text-transform: capitalize;
@@ -118,9 +156,44 @@
     }
   }
 }
+
+.form {
+  p {
+    font-size: 11px !important;
+    text-transform: capitalize;
+    color: #777 !important;
+    line-height: 1.2px !important;
+    margin: 13px 0px;
+    margin-bottom: 15px;
+  }
+  input.error ,
+  textarea.error{
+    background: #c3133b69 !important;
+  }
+
+  input.valid,
+  textarea.valid  {
+    background-color: #e8f0fe !important;
+  }
+  p.error {
+    color: #c3133b69  !important;
+  }
+
+  p.valid {
+    color: #e8f0fe !important;
+  }
+}
 </style>
 
 <script>
+import {
+  required,
+  email,
+  numeric,
+  minLength,
+  maxLength
+} from "vuelidate/lib/validators";
+
 export default {
   name: "contact",
   data() {
@@ -146,8 +219,34 @@ export default {
             { Icon: "fa fa-twitter" }
           ]
         }
-      ]
+      ],
+      message: {
+        userName: null,
+        email: null,
+        number: null,
+        msg: null
+      }
     };
+  },
+  validations: {
+    message: {
+      userName: {
+        required,
+        minLen: minLength(10)
+      },
+      email: {
+        required,
+        email
+      },
+      number: {
+        numeric
+      },
+      msg: {
+        required,
+        minLen: minLength(10),
+        maxLen: maxLength(15)
+      }
+    }
   }
 };
 </script>

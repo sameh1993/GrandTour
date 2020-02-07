@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <!-- title -->
-    <h1>Validate Login & Register Forms</h1>
+    <h1> Register your Account </h1>
     <!-- //title -->
 
     <!-- content -->
@@ -11,7 +11,7 @@
         <div class="box loginBox">
           <!--- start Sign In part -->
           <h3>Login Here</h3>
-          <form class="form" action="#" method="post">
+          <form class="form" @submit.prevent="onSignin">
             <div class="f_row-2">
               <input
                 type="email"
@@ -22,7 +22,7 @@
                 :class=" {'valid': !$v.SignIn.email.$invalid, 'error': $v.SignIn.email.$error }"
               />
               <p class="" v-if="!$v.SignIn.email.required">this field dont must be empty</p>
-              
+              <p class="" v-if="!$v.SignIn.email.email">please, enter a valid email address</p>
             </div>
             <div class="f_row-2 last">
               <input
@@ -36,7 +36,7 @@
               />
               <p v-if="!$v.SignIn.password.required">this field dont must be empty</p>
             </div>
-            <input class="submit-w3" :disabled="$v.$invalid" type="submit" value="Login" />
+            <input class="submit-w3" :disabled="$v.SignIn.$invalid" type="submit" value="Login" />
             <div class="f_link">
               <a href class="resetTag">Forgot your password?</a>
             </div>
@@ -78,7 +78,7 @@
 
           <!-- start reigterayion -->
           <h3>Register</h3>
-          <form class="form">
+          <form @submit.prevent="onSignup" class="form">
             <div class="f_row-2">
               <input
                 type="text"
@@ -140,7 +140,7 @@
                 v-if="!$v.SignUp.confirmPass.sameAs"
               >the field must be Equal password field</p>
             </div>
-            <input class="submit-w3" :disabled="$v.$invalid" type="submit" value="Register" />
+            <input class="submit-w3" :disabled="$v.SignUp.$invalid" type="submit" value="Register" />
           </form>
         </div>
         <a href="#" class="regTag icon-add">
@@ -152,24 +152,25 @@
   </div>
 </template>
 
-<style  lang="scss" coped>
+<style  lang="scss" scoped>
 @import "../assets/css/style.css";
-@import "../GlobalRules/scss/mainRules.scss";
 
 input {
   margin: 0 !important;
 }
 
 .register {
-  padding: 4em 0;
+  padding: 6em 0;
   overflow:hidden;
 }
 
  form{
-  padding: 5em 0;
   font-family: "Magra";
   h1 {
     margin-bottom: 50px;
+  }
+  input:not(+ p) {
+    margin-bottom: 20px;
   }
   .container-agille {
     margin-top: 20px;
@@ -262,6 +263,15 @@ export default {
         $(".formBox").addClass("level-reg-revers");
       }
     });
+  },
+  methods: {
+    onSignup(){
+      console.log("onSignup")
+      return this.$store.dispatch("signup", this.SignUp)
+    },
+    onSignin() {
+      return this.$store.dispatch("login", this.SignIn)
+    }
   }
 };
 </script>

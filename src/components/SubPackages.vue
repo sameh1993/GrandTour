@@ -32,7 +32,7 @@
         </div>
 
       
-        </div>
+        
         <button class="mt-5 mr-auto ml-auto btn btn-primary">view all packages</button>
         
       </div>

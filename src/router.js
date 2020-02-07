@@ -12,8 +12,7 @@ Vue.use(Router);
 export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
-  routes: [
-    {
+  routes: [{
       path: "/",
       name: "home",
       component: Home
@@ -39,7 +38,7 @@ export default new Router({
       component: ContactUs
     },
     {
-      path : "/Register",
+      path: "/Register",
       name: "Registeration",
       component: Registeration
     }
