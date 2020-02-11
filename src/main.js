@@ -27,6 +27,7 @@ import "./assets/css/font-awesome.min.css";
 import Vuelidate from "vuelidate";
 Vue.use(Vuelidate)
 
+
 new Vue({
   router,
   store,

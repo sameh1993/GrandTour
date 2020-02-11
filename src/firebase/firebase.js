@@ -1,5 +1,9 @@
-import firebase, { firestore } from "firebase";
+import firebase from 'firebase/app';
+import "firebase/analytics"
+import "firebase/firebase-storage";
+import "firebase/storage";
 import "firebase/firestore";
+import "firebase";
 
  // Your web app's Firebase configuration
  var firebaseConfig = {
@@ -12,17 +16,16 @@ import "firebase/firestore";
     appId: "1:49507885470:web:629cbce31b94f528e5b68f",
     measurementId: "G-1X6108E8LT"
   };
+
   // Initialize Firebase
   var firebaseApp = firebase.initializeApp(firebaseConfig);
 
+  // firebaseApp.settings({timestampsInSnapshots:true});
+
   // firebase utils
-  const db = "firebase/firestore";
-  const auth = firebase.auth();
-  const currentUser = auth.currentUser
+  // const db = "firebase/firestore";
+  // const auth = firebase.auth();
+  // const currentUser = auth.currentUser
   
-  export default {
-    db,
-    auth,
-    currentUser
-  }
+  export default firebaseApp.firestore()
 

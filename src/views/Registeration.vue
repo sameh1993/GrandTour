@@ -1,9 +1,9 @@
 <template>
   <div class="register">
     <!-- title -->
-    <h1> Register your Account </h1>
+    <h1>Register your Account</h1>
     <!-- //title -->
-
+    
     <!-- content -->
     <div class="container-agille">
       <div class="formBox level-login">
@@ -21,8 +21,8 @@
                 class="input-field"
                 :class=" {'valid': !$v.SignIn.email.$invalid, 'error': $v.SignIn.email.$error }"
               />
-              <p class="" v-if="!$v.SignIn.email.required">this field dont must be empty</p>
-              <p class="" v-if="!$v.SignIn.email.email">please, enter a valid email address</p>
+              <p class v-if="!$v.SignIn.email.required">this field dont must be empty</p>
+              <p class v-if="!$v.SignIn.email.email">please, enter a valid email address</p>
             </div>
             <div class="f_row-2 last">
               <input
@@ -31,10 +31,13 @@
                 @blur="$v.SignIn.password.$touch()"
                 placeholder="Enter Email "
                 class="input-field"
-                value=""
+                value
                 :class=" {'valid': !$v.SignIn.password.$invalid, 'error': $v.SignIn.password.$error }"
               />
               <p v-if="!$v.SignIn.password.required">this field dont must be empty</p>
+            </div>
+            <div class="check text-capitalize mr-2 mb-3"  >
+              <input type="checkbox" v-model="SignIn.check" /> remember me
             </div>
             <input class="submit-w3" :disabled="$v.SignIn.$invalid" type="submit" value="Login" />
             <div class="f_link">
@@ -65,7 +68,7 @@
             <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
             <div class="f_row last">
               <label>Email Id</label>
-              <input type="email" name="email" placeholder="Email" class="input-field" required />
+              <input type="email" name="email" placeholder="Email" class="input-field" />
               <u></u>
             </div>
             <button class="btn button submit-w3">
@@ -88,10 +91,7 @@
                 class="input-field"
                 :class=" {'valid': !$v.SignUp.userName.$invalid, 'error': $v.SignUp.userName.$error }"
               />
-              <p
-                class=""
-                v-if="!$v.SignUp.userName.required"
-              >this field dont must be empty</p>
+              <p class v-if="!$v.SignUp.userName.required">this field dont must be empty</p>
               <p
                 class="text-danger"
                 v-if="!$v.SignUp.userName.minLen"
@@ -107,7 +107,10 @@
                 :class=" {'valid': !$v.SignUp.email.$invalid, 'error': $v.SignUp.email.$error }"
               />
               <p v-if="!$v.SignUp.email.required">this field dont must be empty</p>
-              <p class="text-danger" v-if="!$v.SignUp.email.email">please Enter a valid email address</p>
+              <p
+                class="text-danger"
+                v-if="!$v.SignUp.email.email"
+              >please Enter a valid email address</p>
             </div>
             <div class="f_row-2">
               <input
@@ -161,10 +164,10 @@ input {
 
 .register {
   padding: 6em 0;
-  overflow:hidden;
+  overflow: hidden;
 }
 
- form{
+form {
   font-family: "Magra";
   h1 {
     margin-bottom: 50px;
@@ -182,6 +185,9 @@ input {
   .text-danger {
     color: var(--danger) !important;
   }
+  .f_link {
+      padding-top:25px;
+    }
 }
 </style>
 
@@ -198,14 +204,15 @@ export default {
   data() {
     return {
       SignUp: {
-        userName: null,
-        email: null,
-        password: null,
-        conformPass: null
+        userName: "",
+        email: "",
+        password: "",
+        conformPass: ""
       },
       SignIn: {
-        email: null,
-        password: null
+        email: "",
+        password: "",
+        check: false
       }
     };
   },
@@ -265,12 +272,12 @@ export default {
     });
   },
   methods: {
-    onSignup(){
-      console.log("onSignup")
-      return this.$store.dispatch("signup", this.SignUp)
+    onSignup() {
+      console.log("onSignup");
+      return this.$store.dispatch("signup", this.SignUp);
     },
     onSignin() {
-      return this.$store.dispatch("login", this.SignIn)
+      return this.$store.dispatch("login", this.SignIn);
     }
   }
 };

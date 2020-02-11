@@ -6,18 +6,21 @@
         <p>Vestibulum tellus neque, sodales vel mauris at, rhoncus finibus augue. Vestibulum urna ligula, molestie at ante ut, finibus vulputate felis.</p>
       </div>
       <div class="row">
-
-
         <div
           class="parent mt-5 col-lg-3 col-sm-6 col-xs-12 text-capitalize"
           v-for="(item, index) in images"
+          v-show=" $route.name === 'home'? index >= 4 : true "
           :key="index + 1"
         >
+          <div class="control">
+            <i @click="dataItem(item)" class="fa fa-close"></i>
+            <i @click="clickme(item, index)" class="fa fa-edit"></i>
+          </div>
           <div class="img">
-            <img :src="item.myImg" class="img-fluid w-100"/>
+            <img :src="item.myImg" class="img-fluid w-100" />
             <span>
               <i class="fa fa-tags"></i>
-              {{item.price}}
+              {{ item.price }}
             </span>
           </div>
           <div class="content">
@@ -31,10 +34,13 @@
           </div>
         </div>
 
-      
-        
-        <button class="mt-5 mr-auto ml-auto btn btn-primary">view all packages</button>
-        
+        <form>
+          <input type="file" @change="uploadFile($event)" />
+        </form>
+
+        <button v-show="$route.name === 'home' " class="mt-5 mr-auto ml-auto btn btn-primary">
+          <router-link to="/packages">view all packages</router-link>
+        </button>
       </div>
     </div>
   </div>
@@ -47,6 +53,7 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     padding: 0;
     transform: scaleX(0.93);
+    overflow: hidden;
     .img {
       position: relative;
 
@@ -74,11 +81,30 @@
         font-size: 15px;
         margin-top: 8px;
         margin-bottom: 10px;
-        line-height:1.8;
+        line-height: 1.8;
       }
       .dura {
         color: #444;
         font-weight: 600;
+      }
+    }
+    .control {
+      left: 0;
+      top: 0;
+      padding: 10px;
+      width: 30px;
+      position: absolute;
+      z-index: 10;
+      & > i {
+        background-color: #ffffff;
+        width: 25px;
+        height: 25px;
+        text-align: center;
+        line-height: 25px;
+        color: #333;
+        &:last-child {
+          margin-top: 4px;
+        }
       }
     }
   }
@@ -88,20 +114,27 @@
     text-transform: capitalize;
     font-weight: 600;
     letter-spacing: 1px;
-    display:block;
+    display: block;
     margin: auto;
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
   }
 }
 </style>
 
 <script>
+import db from "firebase";
+
+
 export default {
   props: ["state"],
   data() {
     return {
       images: [
         {
-          myImg:require("../assets/images/p1.jpg"),
+          myImg: require("../assets/images/p1.jpg"),
           price: "20$",
           location: "paris, france",
           title: "Sodales Vel Mauris",
@@ -109,7 +142,7 @@ export default {
           duration: "10 days"
         },
         {
-          myImg:require("../assets/images/p2.jpg"),
+          myImg: require("../assets/images/p2.jpg"),
           price: "20$",
           location: "paris, france",
           title: "Sodales Vel Mauris",
@@ -117,7 +150,7 @@ export default {
           duration: "10 days"
         },
         {
-          myImg:require("../assets/images/p3.jpg"),
+          myImg: require("../assets/images/p3.jpg"),
           price: "20$",
           location: "paris, france",
           title: "Sodales Vel Mauris",
@@ -125,7 +158,39 @@ export default {
           duration: "10 days"
         },
         {
-          myImg:require("../assets/images/p4.jpg"),
+          myImg: require("../assets/images/p4.jpg"),
+          price: "20$",
+          location: "paris, france",
+          title: "Sodales Vel Mauris",
+          para: "Vestibulum tellus neque, et velit mauris at, augue.",
+          duration: "10 days"
+        },
+        {
+          myImg: require("../assets/images/p2.jpg"),
+          price: "20$",
+          location: "paris, france",
+          title: "Sodales Vel Mauris",
+          para: "Vestibulum tellus neque, et velit mauris at, augue.",
+          duration: "10 days"
+        },
+        {
+          myImg: require("../assets/images/p3.jpg"),
+          price: "20$",
+          location: "paris, france",
+          title: "Sodales Vel Mauris",
+          para: "Vestibulum tellus neque, et velit mauris at, augue.",
+          duration: "10 days"
+        },
+        {
+          myImg: require("../assets/images/p2.jpg"),
+          price: "20$",
+          location: "paris, france",
+          title: "Sodales Vel Mauris",
+          para: "Vestibulum tellus neque, et velit mauris at, augue.",
+          duration: "10 days"
+        },
+        {
+          myImg: require("../assets/images/p3.jpg"),
           price: "20$",
           location: "paris, france",
           title: "Sodales Vel Mauris",
@@ -134,6 +199,20 @@ export default {
         }
       ]
     };
+  },
+  methods:{
+    uploadFile(e){
+        const file = e.target.files[0];
+        // Create a root reference
+      let storageRef = db.storage().ref(file.name)
+
+        storageRef.put(file)
+     
+
+      console.log(file)
+
+    }
+    
   }
 };
 </script>

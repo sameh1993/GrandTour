@@ -11,7 +11,7 @@ $mainFont :'Roboto', sans-serif;
     margin: 0;
     text-decoration: none;
     box-sizing: border-box;
-    transition: all .5s ease-in-out;
+    transition: all .4s ease-in-out !important;
 }
 
 .h-50{
@@ -37,6 +37,10 @@ body {
   background-color: rgba(0,0,0,.6);
 }
 
+
+.parent {
+  position: relative !important;
+}
 
 
 $font-Family:'Raleway', sans-serif;
@@ -94,14 +98,21 @@ a{
     line-height: 1.2px !important;
     margin: 13px 0px;
     margin-bottom: 15px;
+    color: #fff !important;
   }
-  input.error {
+
+  input.error,
+  textarea.error {
     background: #c3133b69;
   }
 
-  input.valid {  
-    background-color: #E8F0FE; 
+  input.valid,
+  textarea.valid {  
+    background-color: rgba( #080, .5);
+    color: #fff;
+    font-weight: 600;
   }
+
   p.error {
     color: #c3133b69;
   }

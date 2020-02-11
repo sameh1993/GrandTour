@@ -44,17 +44,18 @@ export default new Vuex.Store({
         })
         .then(res => {
           console.log(res)
+          console.log("this")
           commit('authUser', {
             token: res.data.idToken,
             userId: res.data.localId
           })
-          const now = new Date()
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-          localStorage.setItem('token', res.data.idToken)
-          localStorage.setItem('userId', res.data.localId)
-          localStorage.setItem('expirationDate', expirationDate)
+          // const now = new Date()
+          // const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          // localStorage.setItem('token', res.data.idToken)
+          // localStorage.setItem('userId', res.data.localId)
+          // localStorage.setItem('expirationDate', expirationDate)
           dispatch('storeUser', authData)
-          dispatch('setLogoutTimer', res.data.expiresIn)
+          // dispatch('setLogoutTimer', res.data.expiresIn)
         })
         .catch(error => {
           console.log(error.response.data.error.message)
@@ -74,16 +75,19 @@ export default new Vuex.Store({
         })
         .then(res => {
           console.log(res)
-          const now = new Date()
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-          localStorage.setItem('token', res.data.idToken)
-          localStorage.setItem('userId', res.data.localId)
-          localStorage.setItem('expirationDate', expirationDate)
+          let checkBox = authData.check;
+          if (checkBox === true) {
+            const now = new Date()
+            const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+            localStorage.setItem('token', res.data.idToken)
+            localStorage.setItem('userId', res.data.localId)
+            localStorage.setItem('expirationDate', expirationDate)
+          }
           commit('authUser', {
             token: res.data.idToken,
             userId: res.data.localId
           })
-          alert("The Registeration is Done");
+          alert("Sign In is Done");
           // dispatch('setLogoutTimer', res.data.expiresIn)
         })
         .catch(error => {
@@ -162,6 +166,9 @@ export default new Vuex.Store({
     },
     isAuthenticated(state) {
       return state.idToken !== null
+    },
+    itTokken(state) {
+      return state.idToken;
     }
   }
 })

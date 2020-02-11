@@ -2,8 +2,8 @@
   <div id="app">
     <!--- start header --->
 
-    <header :class="state=='home'?'': 'h-50'">
-      <div class="overlay" v-show="state!= 'home' "></div>
+    <header :class=" $route.name === 'home' ? '': 'h-50'">
+      <div class="overlay" v-show="$route.name!= 'home' "></div>
       <!-- start navigation bar -->
 
       <nav class="navbar navbar-expand-lg navbar-gray bg-dark">
@@ -28,7 +28,7 @@
           <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav ml-auto text-capitalize">
               <router-link to="/" class="nav-link" active-class="active" exact>
-                <button @click="state='home' ">Home</button>
+                <button>Home</button>
               </router-link>
               <router-link to="/about" class="nav-link" active-class="active">
                 <button @click="state='About' ">About Us</button>
@@ -42,8 +42,15 @@
               <router-link to="/contacts" class="nav-link" active-class="active">
                 <button @click="state='contact' ">Contacts</button>
               </router-link>
-              <button class="btn btn-primary" @click="state = 'register' " active-class="active">
-                <router-link to="/register"> Sign Up </router-link>
+              <button v-if="myIdtoken" class="btn btn-primary">
+                <router-link to="/dashboard">Dashboard</router-link>
+              </button>
+              <button v-if="myIdtoken" @click="clearLogin" class="btn btn-primary">
+                <router-link to="/">log out</router-link>
+              </button>
+
+              <button v-if="!myIdtoken" class="btn btn-primary">
+                <router-link to="/register">Sign Up</router-link>
               </button>
             </ul>
           </div>
@@ -56,7 +63,7 @@
       <transition name="fade">
         <div
           id="carouselExampleControls"
-          v-show="state=='home' "
+          v-show="$route.name == 'home' "
           class="carousel slide"
           data-ride="carousel"
         >
@@ -221,11 +228,11 @@ header {
           text-align: center;
           background-color: #333;
           color: #b6b6b6;
-          font-size:15px;
+          font-size: 15px;
           margin: 0 10px;
           border-radius: 20px;
           padding: 14px 0;
-          margin-top : 3px;
+          margin-top: 3px;
           font-weight: 600;
           &:hover {
             background-color: $mainColor;
@@ -257,6 +264,8 @@ header {
       padding: 7px 22px;
       border-radius: 2px;
       text-transform: capitalize;
+      border-radius: 25px;
+      margin-left:8px;
       a {
         color: #fff;
         font-weight: 600;
@@ -264,6 +273,7 @@ header {
         margin-left: 8px;
       }
     }
+    
   }
 
   .carousel {
@@ -419,6 +429,9 @@ export default {
     // $(".nav-link").click(function () {
     //   $(this).parent().addClass("active").siblings().removeClass("active");
     // })
+
+    // auto login 
+    this.$store.dispatch("tryAutoLogin");
   },
   props: ["name", "packages"],
   data: function() {
@@ -442,6 +455,16 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    myIdtoken() {
+      return this.$store.getters.itTokken;
+    }
+  },
+  methods:{
+    clearLogin(){
+      return this.$store.dispatch("tryAutoLogin");
+    }
   }
 };
 </script>

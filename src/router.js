@@ -6,6 +6,7 @@ import Serivces from "./views/Serivces.vue";
 import Packages from "./views/Packages.vue";
 import ContactUs from "./views/ContactUs.vue";
 import Registeration from "./views/Registeration.vue";
+import Dashboard from "./views/Dashboard.vue";
 
 Vue.use(Router);
 
@@ -41,6 +42,11 @@ export default new Router({
       path: "/Register",
       name: "Registeration",
       component: Registeration
+    },
+    {
+      path: '/dashboard',
+      name: "Dashboard",
+      component: Dashboard
     }
   ]
 });
