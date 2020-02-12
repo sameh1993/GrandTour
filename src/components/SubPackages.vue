@@ -207,9 +207,6 @@ export default {
       let storageRef = db.storage().ref(file.name)
 
         storageRef.put(file)
-     
-
-      console.log(file)
 
     }
     
