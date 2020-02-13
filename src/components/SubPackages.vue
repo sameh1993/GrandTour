@@ -7,7 +7,7 @@
       </div>
       <div class="row">
         <div
-          class="parent mt-5 col-lg-3 col-sm-6 col-xs-12 text-capitalize"
+          class="parent mt-4 col-lg-3 col-sm-6 col-xs-12 text-capitalize"
           v-for="(item, index) in images"
           v-show=" $route.name === 'home'? index >= 4 : true "
           :key="index + 1"
@@ -24,7 +24,7 @@
             </span>
           </div>
           <div class="content">
-            <p class="mt-2">{{item.location}}</p>
+            <p class="mt-0">{{item.location}}</p>
             <h4>{{item.title}}</h4>
             <p class="second">{{item.para}}</p>
             <span>
@@ -34,9 +34,12 @@
           </div>
         </div>
 
+
         <form>
           <input type="file" @change="uploadFile($event)" />
         </form>
+
+        
 
         <button v-show="$route.name === 'home' " class="mt-5 mr-auto ml-auto btn btn-primary">
           <router-link to="/packages">view all packages</router-link>
@@ -50,9 +53,10 @@
 .subpackage {
   padding: 4em 0;
   .parent {
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.4),
+      -2px -3px -10px rgba(0, 0, 0, 0.4);
     padding: 0;
-    transform: scaleX(0.93);
+    transform: scaleX(0.92);
     overflow: hidden;
     .img {
       position: relative;
@@ -127,7 +131,6 @@
 <script>
 import db from "firebase";
 
-
 export default {
   props: ["state"],
   data() {
@@ -197,19 +200,29 @@ export default {
           para: "Vestibulum tellus neque, et velit mauris at, augue.",
           duration: "10 days"
         }
-      ]
+      ],
+      file: null
     };
   },
-  methods:{
-    uploadFile(e){
-        const file = e.target.files[0];
-        // Create a root reference
-      let storageRef = db.storage().ref(file.name)
+  methods: {
+    uploadFile(e) {
+      let file = e.target.files[0];
+      // Create a root reference
+      // let storageRef =
+        db.storage().ref(file.name).put(file)
 
-        storageRef.put(file)
-
+     db.storage().ref()
+        .child(file.name)
+        .getDownloadURL()
+        .then(url => {
+          // document.getElementById("image").src = url
+          this.file = url;
+          console.log(this.file)
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
     }
-    
   }
 };
 </script>

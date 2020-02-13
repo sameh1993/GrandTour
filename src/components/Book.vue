@@ -283,7 +283,7 @@ export default {
       db.collection("yourtrip")
         .add(this.addItem)
         .then(() => {
-          this.book = this.book.push(this.addItem);
+          this.book.push(this.addItem);
           console.log("the addition is Done");
         })
         .catch(error => {

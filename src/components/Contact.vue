@@ -17,7 +17,7 @@
       </div>
       <div class="row">
         <div class="col-md-6 col-sm-12 col-xs-12 mt-4">
-          <form class="form">
+          <form @submit.prevent="onSendMsg" class="form">
             <div class="form-group">
               <label for="FullName">Full Name</label>
               <input
@@ -73,7 +73,7 @@
               <p
                 class="text-danger"
                 v-if="!$v.message.msg.minLen || !$v.message.msg.maxLen"
-              >this field dont must be at least 10 char and dont larger than 15 char</p>
+              >this field dont must be at least 10 char and dont larger than 20 char</p>
             </div>
 
             <button type="submit" class="btn btn-primary mt-3">Send</button>
@@ -194,8 +194,10 @@ import {
   maxLength
 } from "vuelidate/lib/validators";
 
+import db from "../firebase/firebase.js";
+
 export default {
-  name: "contact",
+  name:"contactUs",
   data() {
     return {
       SocialItem: [
@@ -228,6 +230,17 @@ export default {
       }
     };
   },
+  methods:{
+    onSendMsg(){
+      db.collection("userMsg").add(this.message)
+      .then(() => {
+        alert("we will be check your message")
+      })
+      .catch(error => {
+        console.log(error.response)
+      })
+    }
+  },
   validations: {
     message: {
       userName: {
@@ -244,7 +257,7 @@ export default {
       msg: {
         required,
         minLen: minLength(10),
-        maxLen: maxLength(15)
+        maxLen: maxLength(20)
       }
     }
   }
