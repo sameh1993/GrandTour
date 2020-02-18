@@ -5,8 +5,9 @@ import About from "./views/About.vue";
 import Serivces from "./views/Serivces.vue";
 import Packages from "./views/Packages.vue";
 import ContactUs from "./views/ContactUs.vue";
-import Registeration from "./views/Registeration.vue";
 import Dashboard from "./views/Dashboard.vue";
+import changePass from "./views/ChangePassword.vue";
+import Registeration from "./views/Registeration.vue";
 
 Vue.use(Router);
 
@@ -47,6 +48,10 @@ export default new Router({
       path: '/dashboard',
       name: "Dashboard",
       component: Dashboard
+    },
+    {
+      path: '/changepass',
+      component: changePass
     }
   ]
 });

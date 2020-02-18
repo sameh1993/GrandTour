@@ -12,8 +12,8 @@
           v-show=" $route.name === 'home'? index >= 4 : true "
           :key="index + 1"
         >
-          <div class="control">
-            <i @click="dataItem(item)" class="fa fa-close"></i>
+          <div class="control" v-if="$route.name == 'Dashboard' ">
+            <i @click="dataItem(item, index)" class="fa fa-close"></i>
             <i @click="clickme(item, index)" class="fa fa-edit"></i>
           </div>
           <div class="img">
@@ -33,17 +33,31 @@
             </span>
           </div>
         </div>
+      </div>
 
+      <button v-show="$route.name === 'home' " class="mt-5 mr-auto ml-auto btn btn-primary">
+        <router-link to="/packages">view all packages</router-link>
+      </button>
 
-        <form>
-          <input type="file" @change="uploadFile($event)" />
-        </form>
+      <div v-if="$route.name == 'Dashboard' " class="edit">
+        <!-- start add a new item -->
+        <h3 class="text-center">add a new Item</h3>
+        <div class="fixed">
+          <form @submit.prevent="addItem" class="form">
+            <fetchingData @passData="fetching" />
+          </form>
+          <i class="fa fa-close"></i>
+        </div>
+        <!--- end add a new item -->
 
-        
-
-        <button v-show="$route.name === 'home' " class="mt-5 mr-auto ml-auto btn btn-primary">
-          <router-link to="/packages">view all packages</router-link>
-        </button>
+        <!-- start add a new item -->
+        <div class="fixed">
+          <form @submit.prevent="editItem" class="form">
+            <fetchingData @passData="fetching" />
+          </form>
+          <i class="fa fa-close"></i>
+        </div>
+        <!--- end add a new item -->
       </div>
     </div>
   </div>
@@ -58,9 +72,9 @@
     padding: 0;
     transform: scaleX(0.92);
     overflow: hidden;
+    display: block !important;
     .img {
       position: relative;
-
       span {
         position: absolute;
         right: 6px;
@@ -70,10 +84,15 @@
         color: #fff;
         color: #fff;
       }
+      & > img {
+        height: 205px;
+      }
     }
     .content {
       padding: 18px;
       background-color: #f5f5f5;
+      height: 250px;
+
       h4 {
         font-weight: bold;
         letter-spacing: 2px;
@@ -125,104 +144,236 @@
       text-decoration: none;
     }
   }
+  .edit {
+    h3 {
+      width: 35%;
+      padding: 12px;
+      background: #333;
+      color: #fff;
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-transform: capitalize;
+      margin: auto;
+      margin-top: 35px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .fixed {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      overflow: auto;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 25px;
+      z-index: 20;
+      .form {
+        width: 60%;
+        margin: auto;
+        padding: 25px;
+        background: rgba(#000, 0.8);
+        padding: 35px;
+        padding-top: 45px !important;
+        border-radius: 13px;
+        overflow: auto;
+      }
+      .fa-close {
+        position: absolute;
+        right: 40px;
+        top: 40px;
+        width: 30px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        color: #fff;
+        border: 1px solid #fff;
+      }
+    }
+  }
 }
 </style>
 
 <script>
-import db from "firebase";
+import db from "../firebase/firebase.js";
+
+// import fb from "firebase";
+
+import fetchingData from "./pushingData/fetchingData.vue";
+
+import jquery from "jquery";
+const $ = jquery;
+window.$ = $;
 
 export default {
   props: ["state"],
   data() {
     return {
       images: [
-        {
-          myImg: require("../assets/images/p1.jpg"),
-          price: "20$",
-          location: "paris, france",
-          title: "Sodales Vel Mauris",
-          para: "Vestibulum tellus neque, et velit mauris at, augue.",
-          duration: "10 days"
-        },
-        {
-          myImg: require("../assets/images/p2.jpg"),
-          price: "20$",
-          location: "paris, france",
-          title: "Sodales Vel Mauris",
-          para: "Vestibulum tellus neque, et velit mauris at, augue.",
-          duration: "10 days"
-        },
-        {
-          myImg: require("../assets/images/p3.jpg"),
-          price: "20$",
-          location: "paris, france",
-          title: "Sodales Vel Mauris",
-          para: "Vestibulum tellus neque, et velit mauris at, augue.",
-          duration: "10 days"
-        },
-        {
-          myImg: require("../assets/images/p4.jpg"),
-          price: "20$",
-          location: "paris, france",
-          title: "Sodales Vel Mauris",
-          para: "Vestibulum tellus neque, et velit mauris at, augue.",
-          duration: "10 days"
-        },
-        {
-          myImg: require("../assets/images/p2.jpg"),
-          price: "20$",
-          location: "paris, france",
-          title: "Sodales Vel Mauris",
-          para: "Vestibulum tellus neque, et velit mauris at, augue.",
-          duration: "10 days"
-        },
-        {
-          myImg: require("../assets/images/p3.jpg"),
-          price: "20$",
-          location: "paris, france",
-          title: "Sodales Vel Mauris",
-          para: "Vestibulum tellus neque, et velit mauris at, augue.",
-          duration: "10 days"
-        },
-        {
-          myImg: require("../assets/images/p2.jpg"),
-          price: "20$",
-          location: "paris, france",
-          title: "Sodales Vel Mauris",
-          para: "Vestibulum tellus neque, et velit mauris at, augue.",
-          duration: "10 days"
-        },
-        {
-          myImg: require("../assets/images/p3.jpg"),
-          price: "20$",
-          location: "paris, france",
-          title: "Sodales Vel Mauris",
-          para: "Vestibulum tellus neque, et velit mauris at, augue.",
-          duration: "10 days"
-        }
+        // {
+        //   myImg: require("../assets/images/p1.jpg"),
+        //   price: "20$",
+        //   location: "paris, france",
+        //   title: "Sodales Vel Mauris",
+        //   para: "Vestibulum tellus neque, et velit mauris at, augue.",
+        //   duration: "10 days"
+        // },
+        // {
+        //   myImg: require("../assets/images/p2.jpg"),
+        //   price: "20$",
+        //   location: "paris, france",
+        //   title: "Sodales Vel Mauris",
+        //   para: "Vestibulum tellus neque, et velit mauris at, augue.",
+        //   duration: "10 days"
+        // },
+        // {
+        //   myImg: require("../assets/images/p3.jpg"),
+        //   price: "20$",
+        //   location: "paris, france",
+        //   title: "Sodales Vel Mauris",
+        //   para: "Vestibulum tellus neque, et velit mauris at, augue.",
+        //   duration: "10 days"
+        // },
+        // {
+        //   myImg: require("../assets/images/p4.jpg"),
+        //   price: "20$",
+        //   location: "paris, france",
+        //   title: "Sodales Vel Mauris",
+        //   para: "Vestibulum tellus neque, et velit mauris at, augue.",
+        //   duration: "10 days"
+        // },
+        // {
+        //   myImg: require("../assets/images/p2.jpg"),
+        //   price: "20$",
+        //   location: "paris, france",
+        //   title: "Sodales Vel Mauris",
+        //   para: "Vestibulum tellus neque, et velit mauris at, augue.",
+        //   duration: "10 days"
+        // },
+        // {
+        //   myImg: require("../assets/images/p3.jpg"),
+        //   price: "20$",
+        //   location: "paris, france",
+        //   title: "Sodales Vel Mauris",
+        //   para: "Vestibulum tellus neque, et velit mauris at, augue.",
+        //   duration: "10 days"
+        // },
+        // {
+        //   myImg: require("../assets/images/p2.jpg"),
+        //   price: "20$",
+        //   location: "paris, france",
+        //   title: "Sodales Vel Mauris",
+        //   para: "Vestibulum tellus neque, et velit mauris at, augue.",
+        //   duration: "10 days"
+        // },
+        // {
+        //   myImg: require("../assets/images/p3.jpg"),
+        //   price: "20$",
+        //   location: "paris, france",
+        //   title: "Sodales Vel Mauris",
+        //   para: "Vestibulum tellus neque, et velit mauris at, augue.",
+        //   duration: "10 days"
+        // }
       ],
-      file: null
+      file: null,
+      fetchingData: null,
+      toUpdate: {
+        itemId: null,
+        Mindex: null
+      }
     };
   },
   methods: {
-    uploadFile(e) {
-      let file = e.target.files[0];
-      // Create a root reference
-      // let storageRef =
-        db.storage().ref(file.name).put(file)
-
-     db.storage().ref()
-        .child(file.name)
-        .getDownloadURL()
-        .then(url => {
-          // document.getElementById("image").src = url
-          this.file = url;
-          console.log(this.file)
+    dataItem(item, index) {
+      db.collection("yourpackage")
+        .doc(item.id)
+        .delete()
+        .then(response => {
+          this.images.splice(index, 1);
+          console.log(response);
         })
         .catch(error => {
           console.log(error.response);
         });
+    },
+    fetching(val) {
+      this.fetchData = val;
+    },
+    addItem() {
+      let myData = {
+        location: this.fetchData.location,
+        para: this.fetchData.para,
+        myImg: this.fetchData.image,
+        duration: this.fetchData.duration,
+        price: this.fetchData.price,
+        title: this.fetchData.title
+      };
+
+      db.collection("yourpackage")
+        .add(myData)
+        .then(() => {
+          alert("the addition is Done");
+          this.images.push(myData);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    clickme(item, index) {
+      this.toUpdate.itemId = item.id;
+      this.toUpdate.Mindex = index;
+      $(".fixed").fadeIn(1200);
+    },
+    editItem() {
+      let myData = {
+        location: this.fetchData.location,
+        para: this.fetchData.para,
+        myImg: this.fetchData.image,
+        duration: this.fetchData.duration,
+        price: this.fetchData.price,
+        title: this.fetchData.title
+      };
+      db.collection("yourpackage")
+        .doc(this.toUpdate.itemId)
+        .update(myData)
+        .then(() => {
+          this.images[this.toUpdate.Mindex] = myData;
+          alert("the updation is Done");
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
+  },
+
+  mounted() {
+    db.collection("yourpackage")
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          let item = doc.data();
+          console.log(item);
+          item.id = doc.id;
+          console.log(item.id);
+          this.images.push(item);
+        });
+      });
+
+    $(".edit h3").click(function() {
+      $(this)
+        .next()
+        .fadeIn(1300);
+    });
+
+    $(".fixed").fadeOut();
+    $(".fixed i").click(function() {
+      $(".fixed").fadeOut(1000);
+    });
+
+  },
+  components: {
+    fetchingData
   }
 };
 </script>

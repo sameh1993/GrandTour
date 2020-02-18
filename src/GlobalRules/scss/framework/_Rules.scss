@@ -20,6 +20,29 @@
   }
 }
 
+@mixin maxScreen($pram) {
+  @if $pram == xs {
+    @media (max-width: 767px) {
+      @content;
+    }
+  } @else if $pram == md {
+    @media (max-width: 768px) {
+      @content;
+    }
+  } @else if $pram == lg {
+    @media (max-width: 992px) {
+      @content;
+    }
+  } @else if (max-width: 1200px) {
+    @content;
+  } @else if $pram == downSm {
+    @media (max-width: 767px) {
+      @content;
+    }
+  }
+}
+
+
 @mixin screen($pram) {
   @if $pram == xs {
     // Extra small devices (portrait phones, less than 576px)

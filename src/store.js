@@ -44,16 +44,15 @@ export default new Vuex.Store({
         })
         .then(res => {
           console.log(res)
-          console.log("this")
           commit('authUser', {
             token: res.data.idToken,
             userId: res.data.localId
           })
-          // const now = new Date()
-          // const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-          // localStorage.setItem('token', res.data.idToken)
-          // localStorage.setItem('userId', res.data.localId)
-          // localStorage.setItem('expirationDate', expirationDate)
+          const now = new Date()
+          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          localStorage.setItem('token', res.data.idToken)
+          localStorage.setItem('userId', res.data.localId)
+          localStorage.setItem('expirationDate', expirationDate)
           dispatch('storeUser', authData)
           // dispatch('setLogoutTimer', res.data.expiresIn)
         })
@@ -65,9 +64,7 @@ export default new Vuex.Store({
           }
         })
     },
-    login({
-      commit,
-    }, authData) {
+    login(authData) {
       axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBGlqvOdYNe6eupAFFtMzgpnZv8QTcVqOc', {
           email: authData.email,
           password: authData.password,
@@ -83,14 +80,16 @@ export default new Vuex.Store({
             localStorage.setItem('userId', res.data.localId)
             localStorage.setItem('expirationDate', expirationDate)
           }
-          commit('authUser', {
-            token: res.data.idToken,
-            userId: res.data.localId
-          })
+          // commit('authUser', {
+          //   token: res.data.idToken,
+          //   userId: res.data.localId
+          // })
+          // dispatch('storeUser', res.data.email)
           alert("Sign In is Done");
           // dispatch('setLogoutTimer', res.data.expiresIn)
         })
         .catch(error => {
+          console.log(error.response)
           console.log(error.response.data.error.message)
           let myError = error.response.data.error.message;
           if (myError === 'INVALID_PASSWORD' || myError === "EMAIL_NOT_FOUND") {
@@ -123,7 +122,7 @@ export default new Vuex.Store({
       localStorage.removeItem('expirationDate')
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
-      router.replace('/signin')
+      router.replace('/register')
     },
     storeUser({
       state
@@ -156,8 +155,22 @@ export default new Vuex.Store({
           commit('storeUser', users[0])
         })
         .catch(error => {
-          console.log(error.response)
+          console.log(error)
         })
+    },
+    resetPassword(state, newPassword){
+      return axios("https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBGlqvOdYNe6eupAFFtMzgpnZv8QTcVqOc", 
+        {
+          idToken: state.idToken,
+          password: newPassword,
+          returnSecureToken	: true
+        }
+      ).then(res => {
+        console.log(res);
+        alert("the u[pdate password is Done")
+      }).catch(error => {
+        console.log(error.response)
+      })
     }
   },
   getters: {

@@ -6,7 +6,11 @@
         <p>Vestibulum tellus neque, sodales vel mauris at, rhoncus finibus augue. Vestibulum urna ligula, molestie at ante ut, finibus vulputate felis.</p>
       </div>
       <div class="row">
-        <div class="col-lg-3 col-sm-6 col-xs-12 mt-4" v-for="(item, index) in items" :key="index + 1">
+        <div
+          class="col-lg-3 col-sm-6 col-xs-12 mt-4"
+          v-for="(item, index) in items"
+          :key="index + 1"
+        >
           <h2 class="text-center text-uppercase pt-3 pb-3">{{item.countory}}</h2>
           <div class="img">
             <img :src="item.myImg" class="img-fluid w-100" />
@@ -29,17 +33,18 @@
     margin: auto;
   }
   .head {
-    @include minScreen(xs){
-      p{
+    @include minScreen(xs) {
+      p {
         max-width: 100%;
         padding: 10px;
-        line-height:2.2;
+        line-height: 2.2;
       }
     }
   }
   .row {
-    &>div {
+    & > div {
       padding: 0;
+      transform: scalex(0.97);
     }
     h2 {
       font-size: 18px;
@@ -50,7 +55,7 @@
     .img {
       position: relative !important;
       overflow: hidden;
-      transform:scalex(.97);
+      transform: scalex(0.97);
       &:hover {
         .overlay {
           transform: translate(0);
@@ -90,8 +95,8 @@
           top: 60%;
         }
         @include screen(xs) {
-         top: 75%;
-         }
+          top: 75%;
+        }
         h4 {
           text-transform: capitalize;
           letter-spacing: 3px;
@@ -102,7 +107,7 @@
           padding: 13px 20px;
           border: 1px solid rgba(#fff, 0.8);
           background-color: transparent;
-          margin-top:18px;
+          margin-top: 18px;
           color: rgba(#fff, 0.8);
           font-weight: 600;
         }
@@ -118,9 +123,15 @@ export default {
     return {
       items: [
         { countory: "china", myImg: require("../assets/images/china.jpg") },
-        { countory: "malaysia", myImg: require("../assets/images/malaysia.jpg") },
+        {
+          countory: "malaysia",
+          myImg: require("../assets/images/malaysia.jpg")
+        },
         { countory: "japan", myImg: require("../assets/images/japan.jpg") },
-        { countory: "singapore", myImg: require("../assets/images/malaysia.jpg") }
+        {
+          countory: "singapore",
+          myImg: require("../assets/images/malaysia.jpg")
+        }
       ]
     };
   }

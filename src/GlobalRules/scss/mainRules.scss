@@ -2,16 +2,15 @@
 @import "framework/animate.scss";
 
 $mainColor  : var(--blue);
-$mainFont :'Roboto', sans-serif;
+$mainFont : "Segoe UI", sans-serif;
 
 
 
 *{
-    padding: 0;
-    margin: 0;
     text-decoration: none;
     box-sizing: border-box;
     transition: all .4s ease-in-out !important;
+    font-family: $mainFont;
 }
 
 .h-50{
@@ -43,7 +42,7 @@ body {
 }
 
 
-$font-Family:'Raleway', sans-serif;
+$font-Family:'Segoe UI', sans-serif;
 h1,h2,h3,h4,p {
   font-family:$font-Family;
   padding: 0;
@@ -75,6 +74,8 @@ a{
     font-weight:600;
     margin-bottom: 15px;
     text-transform: capitalize;
+    font-family: "Segoe UI", sans-serif;
+    font-size: 36px;
     strong {
       font-weight: 600;
       font-size: 37px;

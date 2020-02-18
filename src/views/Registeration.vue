@@ -3,7 +3,7 @@
     <!-- title -->
     <h1>Register your Account</h1>
     <!-- //title -->
-    
+
     <!-- content -->
     <div class="container-agille">
       <div class="formBox level-login">
@@ -36,7 +36,7 @@
               />
               <p v-if="!$v.SignIn.password.required">this field dont must be empty</p>
             </div>
-            <div class="check text-capitalize mr-2 mb-3"  >
+            <div class="check text-capitalize mr-2 mb-3">
               <input type="checkbox" v-model="SignIn.check" /> remember me
             </div>
             <input class="submit-w3" :disabled="$v.SignIn.$invalid" type="submit" value="Login" />
@@ -45,7 +45,7 @@
             </div>
           </form>
         </div>
-        <div class="box forgetbox agile">
+        <div class="box forgetbox agile custom">
           <a href="#" class="back icon-back">
             <svg
               version="1.1"
@@ -63,15 +63,24 @@
               />
             </svg>
           </a>
-          <h3>Reset Password</h3>
-          <form class="form" action="#" method="post">
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
-            <div class="f_row last">
+          <h3 class="mt-3">Reset Password</h3>
+          <form class="form" @submit.prevent="resetPassword">
+            <div>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</div>
+            <div class="f_row last mt-3">
               <label>Email Id</label>
-              <input type="email" name="email" placeholder="Email" class="input-field" />
-              <u></u>
+              <input
+                type="password"
+                name="password"
+                v-model="newpassword"
+                placeholder="Email"
+                class="input-field"
+                @blur="$v.newpassword.$touch()"
+                :click="{ 'valid' : !$v.newpassword.$invalid, 'error': $v.newpassword.$error }"
+              />
+              <p v-if="$v.newpassword.required"> this field dont must be empty </p>
+              <p v-if="$v.newpassword.minLen"> this field must be at least 10 chareture </p>
             </div>
-            <button class="btn button submit-w3">
+            <button class="btn button submit-w3 mt-4 pt-2 pb-2">
               <span>Reset</span>
             </button>
           </form>
@@ -138,10 +147,6 @@
                 :class=" {'valid': !$v.SignUp.confirmPass.$invalid, 'error': $v.SignUp.confirmPass.$error }"
               />
               <p v-if="!$v.SignUp.confirmPass.required">this field dont must be empty</p>
-              <p
-                class="text-danger"
-                v-if="!$v.SignUp.confirmPass.sameAs"
-              >the field must be Equal password field</p>
             </div>
             <input class="submit-w3" :disabled="$v.SignUp.$invalid" type="submit" value="Register" />
           </form>
@@ -157,14 +162,33 @@
 
 <style  lang="scss" scoped>
 @import "../assets/css/style.css";
+// @import "../GlobalRules/scss/mainRules.scss";
 
 input {
   margin: 0 !important;
+  font-family: sans-serif !important;
 }
 
 .register {
   padding: 6em 0;
   overflow: hidden;
+  .btn {
+    text-decoration: none
+  }
+}
+
+.forgetbox {
+  height: 461px;
+  h3 {
+    margin-bottom: 26px;
+  }
+  div {
+    font-size: 18px;
+  }
+}
+
+.custom {
+  padding: 60px 0;
 }
 
 form {
@@ -186,13 +210,19 @@ form {
     color: var(--danger) !important;
   }
   .f_link {
-      padding-top:25px;
-    }
+    padding-top: 25px;
+  }
 }
 </style>
 
 <script>
 import { required, sameAs, minLength, email } from "vuelidate/lib/validators";
+
+// import fb from "firebase";
+
+// import db from "../firebase/firebase.js";
+
+// import fb from "firebase";
 
 // add jquery
 import jQuery from "jquery";
@@ -213,7 +243,8 @@ export default {
         email: "",
         password: "",
         check: false
-      }
+      },
+      newpassword: null
     };
   },
   validations: {
@@ -243,6 +274,10 @@ export default {
       password: {
         required
       }
+    },
+    newpassword: {
+      required,
+      minLen: minLength(10)
     }
   },
   mounted() {
@@ -278,6 +313,9 @@ export default {
     },
     onSignin() {
       return this.$store.dispatch("login", this.SignIn);
+    },
+    resetPassword() {
+      this.$store.dispatch("resetPassword", this.newpassword)
     }
   }
 };

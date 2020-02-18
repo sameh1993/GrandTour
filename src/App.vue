@@ -8,10 +8,10 @@
 
       <nav class="navbar navbar-expand-lg navbar-gray bg-dark">
         <div class="container">
-          <a class="navbar-brand text-capitalize" href="#">
+          <router-link class="navbar-brand text-capitalize" to="/">
             <i class="fa fa-map-signs"></i>
             grand tour
-          </a>
+          </router-link>
           <button
             class="navbar-toggler"
             type="button"
@@ -42,12 +42,27 @@
               <router-link to="/contacts" class="nav-link" active-class="active">
                 <button @click="state='contact' ">Contacts</button>
               </router-link>
-              <button v-if="myIdtoken" class="btn btn-primary">
+              <!-- <button v-if="myIdtoken && $route.name !== 'Dashboard' " class="btn btn-primary">
                 <router-link to="/dashboard">Dashboard</router-link>
               </button>
               <button v-if="myIdtoken" @click="clearLogin" class="btn btn-primary">
-                <router-link to="/">log out</router-link>
-              </button>
+                <router-link to="/Register">log out</router-link>
+              </button>-->
+
+              <div v-if="myIdtoken" class="dropdown">
+                <i class="fa fa-ellipsis-v dropdown-toggle" data-toggle="dropdown"></i>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li>
+                    <router-link class="dropdown-item" to="/dashboard">Dashboard</router-link>
+                  </li>
+                  <li>
+                    <router-link class="dropdown-item" to="/changepass">change password</router-link>
+                  </li>
+                  <li @click="clearLogin">
+                    <router-link class="dropdown-item" to="/Register">logout</router-link>
+                  </li>
+                </ul>
+              </div>
 
               <button v-if="!myIdtoken" class="btn btn-primary">
                 <router-link to="/register">Sign Up</router-link>
@@ -118,7 +133,7 @@
 
     <!--- start footer -->
 
-    <footer>
+    <footer class="pb-4">
       <div class="container">
         <div class="row text-capitalize">
           <div class="address col-lg-3 col-sm-6 col-xs-12">
@@ -218,7 +233,24 @@ header {
         background-color: #b2b2b2;
       }
     }
-    @include minScreen(xs) {
+    .dropdown {
+      i.dropdown-toggle {
+        color: #fff;
+        padding: 11px 7px;
+        font-size: 21px;
+        margin-left:4px;
+        &:after {
+          display: none;
+        }
+        
+      }
+      .dropdown-menu {
+        left:auto !important;
+        right: 0;
+      }
+      
+    }
+    @include maxScreen(lg)  {
       & {
         border: 0;
       }
@@ -234,9 +266,15 @@ header {
           padding: 14px 0;
           margin-top: 3px;
           font-weight: 600;
+          font-family: "Segoe UI", sans-serif;
           &:hover {
             background-color: $mainColor;
           }
+        }
+        .btn {
+          padding: 0;
+          padding:10px 0;
+          margin-top:8px
         }
       }
     }
@@ -250,30 +288,39 @@ header {
       font-size: 16px;
       letter-spacing: 2px;
       text-transform: capitalize;
+      &:last-child{
+        margin-bottom: 13px;
+      }
       button {
         background: transparent;
         border: 0;
         outline: 0;
         color: #fff;
+        font-family: "Segoe UI", sans-serif;
       }
     }
     .navbar-brand {
       font-size: 25px;
+      font-family: "Segoe UI", sans-serif;
+      a{
+        color: #fff !important;
+      }
     }
     .btn {
       padding: 7px 22px;
       border-radius: 2px;
       text-transform: capitalize;
       border-radius: 25px;
-      margin-left:8px;
+      margin-left: 8px;
       a {
         color: #fff;
         font-weight: 600;
         letter-spacing: 2px;
         margin-left: 8px;
+        text-decoration: none;
+        font-family: "Segoe UI", sans-serif;
       }
     }
-    
   }
 
   .carousel {
@@ -430,7 +477,7 @@ export default {
     //   $(this).parent().addClass("active").siblings().removeClass("active");
     // })
 
-    // auto login 
+    // auto login
     this.$store.dispatch("tryAutoLogin");
   },
   props: ["name", "packages"],
@@ -461,9 +508,9 @@ export default {
       return this.$store.getters.itTokken;
     }
   },
-  methods:{
-    clearLogin(){
-      return this.$store.dispatch("tryAutoLogin");
+  methods: {
+    clearLogin() {
+      return this.$store.dispatch("logout");
     }
   }
 };

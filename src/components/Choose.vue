@@ -5,27 +5,36 @@
         <div class="head text-center">
           <h2 class="text-capitalize">why choose Us</h2>
         </div>
-        <div class="row">
-          <div class="control">
+        <div class="control">
             <button class="active" @click="visiblilty='sec1' ">we offer</button>
             <button @click="visiblilty='sec2' ">we provide</button>
           </div>
-          <div class="content row text-center">
-            <div v-for="(item, index) in weOffer" :key="index + 1" class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-5" v-show="visiblilty === 'sec1' ">
-              <i :class="item.myIcon" class="mt-2 mb-2"></i>
-              <h2 class="text-capitalize">{{ item.heading }}</h2>
-              <p>{{ item.para }}</p>
-            </div>
-            <div
-              class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-5"
-              v-for="(item, index) in weProvide"
-              :key="index + 1"
-              v-show="visible"
-            >
-              <i :class="item.myIcon" class="mt-2 mb-2"></i>
-              <h2>{{item.heading}}</h2>
-              <p>{{item.para}}</p>
-            </div>
+        <div class="row">
+          
+            <div v-show="visiblilty == 'sec1' " class="content row text-center">
+              <div
+                v-for="(item, index) in weOffer"
+                :key="index + 1"
+                class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-5"
+                
+              >
+                <i :class="item.myIcon" class="mt-2 mb-2"></i>
+                <h2 class="text-capitalize">{{ item.heading }}</h2>
+                <p>{{ item.para }}</p>
+              </div>
+          </div>
+
+            <div v-show="visiblilty == 'sec2' " class="content row text-center">
+             <div
+                class="col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-5"
+                v-for="(item, index) in weProvide"
+                :key="index + 1"
+                
+              >
+                <i :class="item.myIcon" class="mt-2 mb-2"></i>
+                <h2>{{item.heading}}</h2>
+                <p>{{item.para}}</p>
+              </div>
           </div>
         </div>
       </div>
@@ -40,11 +49,13 @@
   background-image: url("../assets/images/choose.jpg");
   background-size: cover;
   color: #fff;
+ 
   .container {
     margin: auto;
   }
   .overlay {
     background-color: rgba(0, 0, 0, 0.6);
+     padding: 4em 0;
     h2 {
       color: #fff;
     }
@@ -63,8 +74,8 @@
         font-weight: 600;
       }
       .active {
-          background-color: var(--blue);
-          border: 1px solid var(--blue);
+        background-color: var(--blue);
+        border: 1px solid var(--blue);
       }
     }
     .content {
@@ -73,6 +84,7 @@
         border: 1px solid #b6b6b6;
         color: #999;
         transform: scalex(0.92);
+        margin-top: 35px !important;
         i {
           color: var(--blue);
         }
@@ -94,24 +106,18 @@
 
 <script>
 export default {
-  name: "choose",
-  mounted : function () {
-      // $(".control > button").click(function () {
-      //     $(this).addClass("active").siblings().removeClass("active");
-      // });
-  },
   data() {
     return {
       visiblilty: "sec1",
       weOffer: [
         {
-          myIcon: "fa fa-gift fa-2x",
+          myIcon: "fa fa-server fa-2x",
           heading: "winter tours",
           para:
             "Lorem ipsum dolor sit amet, conse ctetur elit. Cras lobortis mollis arcu, vel vulputate justo."
         },
         {
-          myIcon: "fa fa-gift fa-2x",
+          myIcon: "fa fa-edit fa-2x",
           heading: "Accomodation",
           para:
             "Lorem ipsum dolor sit amet, conse ctetur elit. Cras lobortis mollis arcu, vel vulputate justo."
@@ -137,18 +143,13 @@ export default {
             "Lorem ipsum dolor sit amet, conse ctetur elit. Cras lobortis mollis arcu, vel vulputate justo."
         },
         {
-          myIcon: "fa fa-gift fa-2x",
+          myIcon: "fa fa-server fa-2x",
           heading: "Easy Trip",
           para:
             "Lorem ipsum dolor sit amet, conse ctetur elit. Cras lobortis mollis arcu, vel vulputate justo."
         }
       ]
     };
-  },methods: {
-    visible() {
-      return this.visiblilty == 'sec2' 
-    }
   }
-
 };
 </script>

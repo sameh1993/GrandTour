@@ -5,7 +5,7 @@
         <h2>How To Plan Your Trip</h2>
       </div>
       <div class="row text-capitalize">
-        <div class="parent col-md-4 col-sm-6 mt-3" v-for="(item, index) in book" :key="index + 1">
+        <div class="parent col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-3" v-for="(item, index) in book" :key="index + 1">
           <div v-if="$route.name === 'Dashboard' " class="control">
             <i @click="dataItem(item)" class="fa fa-close"></i>
             <i @click="clickme(item, index)" class="fa fa-edit"></i>
@@ -302,13 +302,14 @@ export default {
       console.log(this.toUpdate.itemId)
     },
     onUpdateItem(){
+      
       db.collection("yourtrip").doc(this.toUpdate.itemId).update(this.updateItem)
       .then(() => {
-         this.book[this.toUpdate.Mindex].push(this.updateItem)
+         this.book[this.toUpdate.Mindex] = this.updateItem
          console.log("the updation is Done")
       })
       .catch(error => {
-        console.log(error.response);
+        console.log(error);
       })
     }
   },

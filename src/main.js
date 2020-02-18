@@ -8,6 +8,12 @@ Vue.config.productionTip = false;
 // include jquery
 window.$ = window.jQuery = require('jquery');
 
+// import eventbus 
+// export const eventBus = new Vue(); // added line
+import eventBus from "vue-bus";
+
+Vue.use(eventBus)
+
 
 
 // include vue min file
