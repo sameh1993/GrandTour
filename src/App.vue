@@ -79,7 +79,7 @@
         <div
           id="carouselExampleControls"
           v-show="$route.name == 'home' "
-          class="carousel slide"
+          class="carousel slide carousel-fade"
           data-ride="carousel"
         >
           <div class="carousel-inner">

@@ -2,7 +2,9 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
-import router from "./router"
+import router from "./router";
+
+import db from "./firebase/firebase.js";
 
 Vue.use(Vuex)
 
@@ -48,11 +50,11 @@ export default new Vuex.Store({
             token: res.data.idToken,
             userId: res.data.localId
           })
-          const now = new Date()
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-          localStorage.setItem('token', res.data.idToken)
-          localStorage.setItem('userId', res.data.localId)
-          localStorage.setItem('expirationDate', expirationDate)
+          // const now = new Date()
+          // const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+          // localStorage.setItem('token', res.data.idToken)
+          // localStorage.setItem('userId', res.data.localId)
+          // localStorage.setItem('expirationDate', expirationDate)
           dispatch('storeUser', authData)
           // dispatch('setLogoutTimer', res.data.expiresIn)
         })
@@ -65,37 +67,42 @@ export default new Vuex.Store({
         })
     },
     login(authData) {
-      axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBGlqvOdYNe6eupAFFtMzgpnZv8QTcVqOc', {
-          email: authData.email,
-          password: authData.password,
-          returnSecureToken: true
-        })
-        .then(res => {
-          console.log(res)
-          let checkBox = authData.check;
-          if (checkBox === true) {
-            const now = new Date()
-            const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-            localStorage.setItem('token', res.data.idToken)
-            localStorage.setItem('userId', res.data.localId)
-            localStorage.setItem('expirationDate', expirationDate)
-          }
-          // commit('authUser', {
-          //   token: res.data.idToken,
-          //   userId: res.data.localId
-          // })
-          // dispatch('storeUser', res.data.email)
-          alert("Sign In is Done");
-          // dispatch('setLogoutTimer', res.data.expiresIn)
-        })
+      // axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBGlqvOdYNe6eupAFFtMzgpnZv8QTcVqOc', {
+      //     email: authData.email,
+      //     password: authData.password,
+      //     returnSecureToken: true
+      //   })
+      //   .then(res => {
+      //     console.log(res)
+      //     let checkBox = authData.check;
+      //     if (checkBox === true) {
+      //       const now = new Date()
+      //       const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
+      //       localStorage.setItem('token', res.data.idToken)
+      //       localStorage.setItem('userId', res.data.localId)
+      //       localStorage.setItem('expirationDate', expirationDate)
+      //     }
+      //     // commit('authUser', {
+      //     //   token: res.data.idToken,
+      //     //   userId: res.data.localId
+      //     // })
+      //     // dispatch('storeUser', res.data.email)
+      //     alert("Sign In is Done");
+      //     // dispatch('setLogoutTimer', res.data.expiresIn)
+      //   })
+      //   .catch(error => {
+      //     console.log(error.response)
+      //     console.log(error.response.data.error.message)
+      //     let myError = error.response.data.error.message;
+      //     if (myError === 'INVALID_PASSWORD' || myError === "EMAIL_NOT_FOUND") {
+      //       alert("please, enter a valid Email or Password")
+      //     }
+      //   })
+        db.auth().signInWithEmailAndPassword(authData.email, authData.passsword)
         .catch(error => {
-          console.log(error.response)
-          console.log(error.response.data.error.message)
-          let myError = error.response.data.error.message;
-          if (myError === 'INVALID_PASSWORD' || myError === "EMAIL_NOT_FOUND") {
-            alert("please, enter a valid Email or Password")
-          }
+          console.log(error)
         })
+      
     },
     tryAutoLogin({
       commit

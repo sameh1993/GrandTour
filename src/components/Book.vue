@@ -305,7 +305,7 @@ export default {
       
       db.collection("yourtrip").doc(this.toUpdate.itemId).update(this.updateItem)
       .then(() => {
-         this.book[this.toUpdate.Mindex] = this.updateItem
+         this.book.splice(this.toUpdate.Mindex, 1, this.updateItem)
          console.log("the updation is Done")
       })
       .catch(error => {

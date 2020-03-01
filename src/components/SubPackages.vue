@@ -198,6 +198,8 @@
 <script>
 import db from "../firebase/firebase.js";
 
+import fb from "firebase";
+
 // import fb from "firebase";
 
 import fetchingData from "./pushingData/fetchingData.vue";
@@ -344,7 +346,33 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    }
+    },
+    uploadFile(e) {
+      let file = e.target.files[0];
+      // Create a root reference
+      // let storageRef =
+      fb.storage()
+        .ref(file.name)
+        .put(file);
+
+      fb.storage()
+        .ref()
+        .child(file.name)
+        .getDownloadURL()
+        .then(url => {
+          // document.getElementById("image").src = url
+          this.pushingData.image = url;
+          console.log(this.pushingData.image);
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    },
+    pushData(event){
+      console.log(event);
+      this.$emit("passData", this.pushingData)
+      
+    },
   },
 
   mounted() {
