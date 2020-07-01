@@ -365,8 +365,11 @@ header {
         margin-right: 10px;
         color: #fff;
         margin-top: 20px;
-        background-color: rgba(#fff, 0.2);
+        
         transition: all 0.3s linear;
+        &:not(:first-child) {
+          background-color: rgba(#fff, 0.2);
+        }
 
         &:hover {
           background-color: var(--blue);
@@ -454,6 +457,16 @@ footer {
     margin-top: 25px;
   }
 }
+
+.fixed {
+  position: fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  background-color: var(--mainColor);
+  z-index: 30;
+}
 </style>
 
 <script>
@@ -512,6 +525,11 @@ export default {
     clearLogin() {
       return this.$store.dispatch("logout");
     }
+  },
+  beforeMount(){
+    // $(".fixed").fadeOut(700, ()=> {
+    //   $(this).remove();
+    // })
   }
 };
 </script>

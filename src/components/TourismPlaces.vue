@@ -28,6 +28,8 @@
 </template>
 
 <style lang="scss" scoped>
+@import "../GlobalRules/scss/mainRules.scss";
+
 .places {
   padding: 5em 0;
   .row {
@@ -42,7 +44,10 @@
     p {
       line-height: 1.9;
       font-size: 15px;
-      margin-top: 21px !important;
+      margin-top: 21px ;
+      @include maxScreen(xs) {
+        margin-top: 4px !important;
+      }
     }
     
   }

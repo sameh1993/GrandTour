@@ -91,7 +91,6 @@
     .content {
       padding: 18px;
       background-color: #f5f5f5;
-      height: 250px;
 
       h4 {
         font-weight: bold;
@@ -362,7 +361,6 @@ export default {
         .then(url => {
           // document.getElementById("image").src = url
           this.pushingData.image = url;
-          console.log(this.pushingData.image);
         })
         .catch(error => {
           console.log(error.response);
@@ -381,9 +379,9 @@ export default {
       .then(snapshot => {
         snapshot.forEach(doc => {
           let item = doc.data();
-          console.log(item);
+          // console.log(item);
           item.id = doc.id;
-          console.log(item.id);
+          // console.log(item.id);
           this.images.push(item);
         });
       });

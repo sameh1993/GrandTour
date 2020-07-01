@@ -74,6 +74,9 @@
       font-weight: 600;
       color: #323648;
     }
+    .img {
+      min-height: 190px;
+    }
     @include minScreen(xs) {
       & > div {
         padding: 20px 40px;

@@ -104,12 +104,15 @@
           padding-top: 4px;
         }
         button {
-          padding: 13px 20px;
+          padding: 5px 20px;
           border: 1px solid rgba(#fff, 0.8);
           background-color: transparent;
           margin-top: 18px;
           color: rgba(#fff, 0.8);
           font-weight: 600;
+          &:hover {
+            background-color: var(--blue)
+          }
         }
       }
     }

@@ -5,15 +5,19 @@
         <h2>How To Plan Your Trip</h2>
       </div>
       <div class="row text-capitalize">
-        <div class="parent col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-3" v-for="(item, index) in book" :key="index + 1">
-          <div v-if="$route.name === 'Dashboard' " class="control">
+        <div
+          class="parent col-lg-4 col-md-6 col-sm-12 col-xs-12 mt-3"
+          v-for="(item, index) in book"
+          :key="index + 1"
+        >
+          <div v-if="$route.name === 'Dashboard'" class="control">
             <i @click="dataItem(item)" class="fa fa-close"></i>
             <i @click="clickme(item, index)" class="fa fa-edit"></i>
           </div>
           <div class="content text-center">
             <i :class="item.myIcon"></i>
-            <h4 class="pt-2 pm-1">{{item.title}}</h4>
-            <p>{{item.para}}</p>
+            <h4 class="pt-2 pm-1">{{ item.title }}</h4>
+            <p>{{ item.para }}</p>
           </div>
         </div>
       </div>
@@ -29,9 +33,14 @@
               type="text"
               class="form-control"
               placeholder="font-awesome Ex:fa fa-exp..."
-              :class=" {'valid': !$v.addItem.myIcon.$invalid, 'error': $v.addItem.myIcon.$error }"
+              :class="{
+                valid: !$v.addItem.myIcon.$invalid,
+                error: $v.addItem.myIcon.$error,
+              }"
             />
-            <p v-if="!$v.addItem.myIcon.required">this field dont must be empty</p>
+            <p v-if="!$v.addItem.myIcon.required">
+              this field dont must be empty
+            </p>
           </div>
           <div class="form-group">
             <input
@@ -40,27 +49,41 @@
               class="form-control"
               type="text"
               placeholder="Enter Title"
-              :class=" {'valid': !$v.addItem.title.$invalid, 'error': $v.addItem.title.$error }"
+              :class="{
+                valid: !$v.addItem.title.$invalid,
+                error: $v.addItem.title.$error,
+              }"
             />
-            <p v-if="!$v.addItem.title.required">this field dont must be empty</p>
+            <p v-if="!$v.addItem.title.required">
+              this field dont must be empty
+            </p>
           </div>
           <div class="form-group">
-            <textarea 
-            v-model="addItem.para" 
-            @blur="$v.addItem.para.$touch()" 
-            class="form-control"
-            :class=" {'valid': !$v.addItem.para.$invalid, 'error': $v.addItem.para.$error }"
+            <textarea
+              v-model="addItem.para"
+              @blur="$v.addItem.para.$touch()"
+              class="form-control"
+              :class="{
+                valid: !$v.addItem.para.$invalid,
+                error: $v.addItem.para.$error,
+              }"
             ></textarea>
-            <p v-if="!$v.addItem.para.required">this field dont must be empty</p>
+            <p v-if="!$v.addItem.para.required">
+              this field dont must be empty
+            </p>
           </div>
           <div class="form-group">
-            <input type="submit" :disabled="$v.addItem.$invalid" value="Add Item" />
+            <input
+              type="submit"
+              :disabled="$v.addItem.$invalid"
+              value="Add Item"
+            />
           </div>
         </form>
 
         <!-- start section for update item -->
         <form @submit.prevent="onUpdateItem" id="update" class="format formBox">
-          <h3 class="text-capitalize"> update Item </h3>
+          <h3 class="text-capitalize">update Item</h3>
           <div class="form-group">
             <input
               v-model="updateItem.myIcon"
@@ -68,9 +91,14 @@
               type="text"
               class="form-control"
               placeholder="font-awesome Ex:fa fa-exp..."
-              :class=" {'valid': !$v.updateItem.myIcon.$invalid, 'error': $v.updateItem.myIcon.$error }"
+              :class="{
+                valid: !$v.updateItem.myIcon.$invalid,
+                error: $v.updateItem.myIcon.$error,
+              }"
             />
-            <p v-if="!$v.updateItem.myIcon.required">this field dont must be empty</p>
+            <p v-if="!$v.updateItem.myIcon.required">
+              this field dont must be empty
+            </p>
           </div>
           <div class="form-group">
             <input
@@ -79,19 +107,35 @@
               class="form-control"
               type="text"
               placeholder="Enter Title"
-              :class=" {'valid': !$v.updateItem.title.$invalid, 'error': $v.updateItem.title.$error }"
+              :class="{
+                valid: !$v.updateItem.title.$invalid,
+                error: $v.updateItem.title.$error,
+              }"
             />
-            <p v-if="!$v.updateItem.title.required">this field dont must be empty</p>
+            <p v-if="!$v.updateItem.title.required">
+              this field dont must be empty
+            </p>
           </div>
           <div class="form-group">
-            <textarea v-model="updateItem.para" 
-            @blur="$v.updateItem.para.$touch()"
-            :class=" {'valid': !$v.updateItem.para.$invalid, 'error': $v.updateItem.para.$error }"
-             class="form-control"></textarea>
-            <p v-if="!$v.updateItem.para.required">this field dont must be empty</p>
+            <textarea
+              v-model="updateItem.para"
+              @blur="$v.updateItem.para.$touch()"
+              :class="{
+                valid: !$v.updateItem.para.$invalid,
+                error: $v.updateItem.para.$error,
+              }"
+              class="form-control"
+            ></textarea>
+            <p v-if="!$v.updateItem.para.required">
+              this field dont must be empty
+            </p>
           </div>
           <div class="form-group">
-            <input type="submit" :disabled="$v.updateItem.$invalid" value="Add Item" />
+            <input
+              type="submit"
+              :disabled="$v.updateItem.$invalid"
+              value="Add Item"
+            />
           </div>
         </form>
       </div>
@@ -134,7 +178,7 @@
         .form-control {
           padding: 13px 12px;
         }
-        
+
         input {
           padding: 12px 0;
         }
@@ -153,10 +197,10 @@
   .row {
     & > div {
       .content i {
-        font-size: 30px;
-        height: 80px;
-        width: 80px;
-        line-height: 80px;
+        font-size: 22px;
+        height: 58px;
+        width: 58px;
+        line-height: 58px;
         border-radius: 100%;
         background-color: #fff;
         color: var(--blue);
@@ -196,7 +240,6 @@
 }
 </style>
 
-
 <script>
 import db from "../firebase/firebase.js";
 
@@ -232,25 +275,25 @@ export default {
       addItem: {
         myIcon: "",
         title: "",
-        para: ""
+        para: "",
       },
       updateItem: {
         myIcon: "",
         title: "",
-        para: ""
+        para: "",
       },
-      toUpdate:{
-        itemId : null,
-        Mindex: null
-      }
+      toUpdate: {
+        itemId: null,
+        Mindex: null,
+      },
     };
   },
   mounted() {
     // to fetching data from firebase
     db.collection("yourtrip")
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
           let items = doc.data();
           items.id = doc.id;
           // console.log(items.id)
@@ -275,7 +318,7 @@ export default {
             return bo.id != item.id;
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error.response);
         });
     },
@@ -286,56 +329,60 @@ export default {
           this.book.push(this.addItem);
           console.log("the addition is Done");
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error.response);
         });
     },
     clickme(item, index) {
-      console.log("welcome")
-      $("#update").slideToggle()
-      $("html, body").animate({
-        scrollTop: $("#update").offset().top
-      }, 1000);
+      console.log("welcome");
+      $("#update").slideToggle();
+      $("html, body").animate(
+        {
+          scrollTop: $("#update").offset().top,
+        },
+        1000
+      );
       this.toUpdate.itemId = item.id;
       this.toUpdate.Mindex = index;
-      console.log(this.toUpdate.Mindex)
-      console.log(this.toUpdate.itemId)
+      console.log(this.toUpdate.Mindex);
+      console.log(this.toUpdate.itemId);
     },
-    onUpdateItem(){
-      
-      db.collection("yourtrip").doc(this.toUpdate.itemId).update(this.updateItem)
-      .then(() => {
-         this.book.splice(this.toUpdate.Mindex, 1, this.updateItem)
-         console.log("the updation is Done")
-      })
-      .catch(error => {
-        console.log(error);
-      })
-    }
+    onUpdateItem() {
+      db.collection("yourtrip")
+        .doc(this.toUpdate.itemId)
+        .update(this.updateItem)
+        .then(() => {
+          this.book.splice(this.toUpdate.Mindex, 1, this.updateItem);
+          console.log("the updation is Done");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   validations: {
     addItem: {
       myIcon: {
-        required
+        required,
       },
       title: {
-        required
+        required,
       },
       para: {
-        required
-      }
+        required,
+      },
     },
     updateItem: {
       myIcon: {
-        required
+        required,
       },
       title: {
-        required
+        required,
       },
       para: {
-        required
-      }
-    }
-  }
+        required,
+      },
+    },
+  },
 };
 </script>
